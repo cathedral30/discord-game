@@ -6,4 +6,4 @@ I aim to create a discord chat bot that allows users to collect randomly generat
 
 ## Structure
 
-The Bot is written in Java 13 currently and makes use of the (https://github.com/DV8FromTheWorld/JDA)JDA package for discord integration. The bot will store data in a MySQL database.
+The Bot is written in Java 13 currently and makes use of the (https://github.com/DV8FromTheWorld/JDA)[JDA] package for discord integration. The bot will store data in a MySQL database.
