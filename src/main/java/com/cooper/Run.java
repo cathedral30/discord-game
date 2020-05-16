@@ -24,22 +24,25 @@ import net.dv8tion.jda.api.exceptions.RateLimitedException;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import javax.security.auth.login.LoginException;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.net.URL;
 import java.util.List;
 import java.util.Random;
+import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Run extends ListenerAdapter
 {
-    /**
-     * This is the method where the program starts.
-     */
-    public static void main(String[] args)
-    {
-        //We construct a builder for a BOT account. If we wanted to use a CLIENT account
-        // we would use AccountType.CLIENT
+    public static void main(String[] args) throws FileNotFoundException {
+        Run main = new Run();
+        File file = main.getFileFromResources("bot_token");
+        Scanner myReader = new Scanner(file);
+        String token = myReader.next();
+        myReader.close();
         try
         {
-            JDA jda = new JDABuilder("NzExMDA2MDIzNTIyOTc1ODA1.Xr8w5g.duQvkbJajgXENsXRdka6oSUPazw")         // The token of the account that is logging in.
+            JDA jda = new JDABuilder(token)         // The token of the account that is logging in.
                     .addEventListeners(new Run())  // An instance of a class that will handle events.
                     .build();
             jda.awaitReady(); // Blocking guarantees that JDA will be completely loaded.
@@ -272,5 +275,18 @@ public class Run extends ListenerAdapter
                 e.printStackTrace();
             }
         }
+    }
+
+    private File getFileFromResources(String fileName) {
+
+        ClassLoader classLoader = getClass().getClassLoader();
+
+        URL resource = classLoader.getResource(fileName);
+        if (resource == null) {
+            throw new IllegalArgumentException("file is not found!");
+        } else {
+            return new File(resource.getFile());
+        }
+
     }
 }
