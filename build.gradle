@@ -1,0 +1,18 @@
+plugins {
+    id 'java'
+}
+
+group 'com.cooper'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+dependencies {
+    compile 'net.dv8tion:JDA:4.1.1_151'
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
