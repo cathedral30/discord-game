@@ -2,7 +2,7 @@
 ### Gradle template
 .gradle
 /build/
-
+src/main/resources/bot_token
 # Ignore Gradle GUI config
 gradle-app.setting
 
