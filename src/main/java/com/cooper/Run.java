@@ -29,6 +29,8 @@ public class Run extends ListenerAdapter
         String token = myReader.next();
         myReader.close();
 
+        System.out.println(main.database.GetPlayerByUsername("test"));
+
         try
         {
             JDA jda = new JDABuilder(token)         // The token of the account that is logging in.

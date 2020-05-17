@@ -1,5 +1,33 @@
 package com.cooper.repository;
 
+import com.cooper.data.Player;
+
+import java.sql.*;
+
 public class Players {
-    
+    Connection conn;
+
+    public Players(Connection conn) {
+        this.conn = conn;
+    }
+
+    public Player getPlayerByUsername(String username) throws SQLException {
+        PreparedStatement stmt = conn.prepareStatement("SELECT * FROM players WHERE `username` = ?");
+        stmt.setString(1, username);
+        ResultSet rs = stmt.executeQuery();
+
+        Player player = null;
+
+        while(rs.next()){
+            player = new Player(rs);
+        }
+        rs.close();
+        stmt.close();
+        conn.close();
+        if (player != null) {
+            return player;
+        } else {
+            throw new SQLDataException();
+        }
+    }
 }
