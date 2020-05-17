@@ -15,21 +15,26 @@ import java.util.Random;
 import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
 import java.sql.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Run extends ListenerAdapter
 {
     Database database;
+    Logger logger = LoggerFactory.getLogger(Run.class);
 
-    public static void main(String[] args) throws FileNotFoundException, SQLException, ClassNotFoundException {
+    public static void main(String[] args) throws FileNotFoundException, ClassNotFoundException {
         Run main = new Run();
+        try {
         main.loadDatabase();
+        } catch(SQLException e) {
+            main.logger.error("Error connecting to database", e);
+        }
 
         File file = main.getFileFromResources("bot_token");
         Scanner myReader = new Scanner(file);
         String token = myReader.next();
         myReader.close();
-
-        System.out.println(main.database.GetPlayerByUsername("test"));
 
         try
         {
@@ -70,25 +75,41 @@ public class Run extends ListenerAdapter
 
         if (event.isFromType(ChannelType.TEXT))         //If this message was sent to a Guild TextChannel
         {
-            //Because we now know that this message was sent in a Guild, we can do guild specific things
-            // Note, if you don't check the ChannelType before using these methods, they might return null due
-            // the message possibly not being from a Guild!
+            Guild guild = event.getGuild();
+            TextChannel textChannel = event.getTextChannel();
+            Member member = event.getMember();
 
-            Guild guild = event.getGuild();             //The Guild that this message was sent in. (note, in the API, Guilds are Servers)
-            TextChannel textChannel = event.getTextChannel(); //The TextChannel that this message was sent to.
-            Member member = event.getMember();          //This Member that sent the message. Contains Guild specific information about the User!
+            if (msg.startsWith("!bear ")) {
+                String command = msg.split("!bear ")[1];
 
-            String name;
-            if (message.isWebhookMessage())
-            {
-                name = author.getName();                //If this is a Webhook message, then there is no Member associated
-            }                                           // with the User, thus we default to the author for name.
-            else
-            {
-                name = member.getEffectiveName();       //This will either use the Member's nickname if they have one,
-            }                                           // otherwise it will default to their username. (User#getName())
+                if (command.equals("register")) {
+                    try {
+                        this.database.CreatePlayer(author.getName());
 
-            System.out.printf("(%s)[%s]<%s>: %s\n", guild.getName(), textChannel.getName(), name, msg);
+                        channel.sendMessage(
+                                String.format("You been registered @%s!", author.getName())
+                        ).queue();
+
+                    } catch(SQLException e) {
+                        this.logger.error("Error creating player", e);
+                        channel.sendMessage(
+                                String.format("I'm sorry @%s I was unable to register you :(", author.getName())
+                        ).queue();
+                    }
+                }
+
+                String name;
+                if (message.isWebhookMessage())
+                {
+                    name = author.getName();                //If this is a Webhook message, then there is no Member associated
+                }                                           // with the User, thus we default to the author for name.
+                else
+                {
+                    name = member.getEffectiveName();       //This will either use the Member's nickname if they have one,
+                }                                           // otherwise it will default to their username. (User#getName())
+
+                System.out.printf("(%s)[%s]<%s>: %s\n", guild.getName(), textChannel.getName(), name, msg);
+            }
         }
         else if (event.isFromType(ChannelType.PRIVATE)) //If this message was sent to a PrivateChannel
         {

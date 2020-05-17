@@ -25,4 +25,8 @@ public class Database {
     public Player GetPlayerByUsername(String username) throws SQLException {
         return this.players.getPlayerByUsername(username);
     }
+
+    public void CreatePlayer(String username) throws SQLException {
+        this.players.createPlayer(username);
+    }
 }

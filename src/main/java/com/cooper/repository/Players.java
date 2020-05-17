@@ -23,11 +23,17 @@ public class Players {
         }
         rs.close();
         stmt.close();
-        conn.close();
         if (player != null) {
             return player;
         } else {
             throw new SQLDataException();
         }
+    }
+
+    public void createPlayer(String username) throws SQLException {
+        PreparedStatement stmt = conn.prepareStatement("INSERT INTO players(`username`) VALUES(?)");
+        stmt.setString(1, username);
+        stmt.execute();
+        stmt.close();
     }
 }
