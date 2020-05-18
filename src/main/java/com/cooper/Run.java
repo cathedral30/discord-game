@@ -100,7 +100,11 @@ public class Run extends ListenerAdapter
                 }
 
                 if (command.equals("generate")) {
-                    System.out.println(new Creature(this.database));
+                    try {
+                        this.database.createCreature(this.database.GetPlayerByUsername(author.getName()), new Creature(this.database));
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
                 }
 
                 String name;

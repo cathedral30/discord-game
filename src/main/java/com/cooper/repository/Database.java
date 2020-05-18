@@ -3,6 +3,7 @@ package com.cooper.repository;
 import java.sql.*;
 
 import com.cooper.data.BodyPart;
+import com.cooper.data.Creature;
 import com.cooper.data.Player;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +18,7 @@ public class Database {
     Players players;
     Names names;
     BodyParts bodyParts;
+    Creatures creatures;
 
     public Database() throws SQLException, ClassNotFoundException {
         Class.forName("com.mysql.jdbc.Driver");
@@ -25,6 +27,7 @@ public class Database {
         this.players = new Players(conn);
         this.names = new Names(conn);
         this.bodyParts = new BodyParts(conn);
+        this.creatures = new Creatures(conn);
     }
 
     public Player GetPlayerByUsername(String username) throws SQLException {
@@ -41,5 +44,9 @@ public class Database {
 
     public BodyPart getBodyPart(String type) throws SQLException {
         return this.bodyParts.getBodyPart(type);
+    }
+
+    public void createCreature(Player player, Creature creature) throws SQLException {
+        this.creatures.createCreature(player, creature);
     }
 }
