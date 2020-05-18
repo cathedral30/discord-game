@@ -1,5 +1,6 @@
 package com.cooper;
 
+import com.cooper.data.Creature;
 import com.cooper.repository.Database;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -96,6 +97,10 @@ public class Run extends ListenerAdapter
                                 String.format("I'm sorry @%s I was unable to register you :(", author.getName())
                         ).queue();
                     }
+                }
+
+                if (command.equals("generate")) {
+                    System.out.println(new Creature(this.database));
                 }
 
                 String name;

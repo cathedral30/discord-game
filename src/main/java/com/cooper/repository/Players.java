@@ -1,15 +1,13 @@
 package com.cooper.repository;
 
 import com.cooper.data.Player;
+import lombok.AllArgsConstructor;
 
 import java.sql.*;
 
+@AllArgsConstructor
 public class Players {
     Connection conn;
-
-    public Players(Connection conn) {
-        this.conn = conn;
-    }
 
     public Player getPlayerByUsername(String username) throws SQLException {
         PreparedStatement stmt = conn.prepareStatement("SELECT * FROM players WHERE `username` = ?");
