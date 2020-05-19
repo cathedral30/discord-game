@@ -14,16 +14,17 @@ public class Creatures {
     }
 
     public void createCreature(Player player, Creature creature) throws SQLException {
-        PreparedStatement stmt = conn.prepareStatement("INSERT INTO creatures(`player_id`, `name`, `hp`, `hardness`, `dodge`, `armour`, `sAttack`, `hAttack`, `piercing`) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+        PreparedStatement stmt = conn.prepareStatement("INSERT INTO creatures(`player_id`, `name`, `max_hp`, `hp`, `hardness`, `dodge`, `armour`, `sAttack`, `hAttack`, `piercing`) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
         stmt.setLong(1, player.getId());
         stmt.setString(2, creature.getName());
-        stmt.setInt(3, creature.getHp());
-        stmt.setInt(4, creature.getHardness());
-        stmt.setInt(5, creature.getDodge());
-        stmt.setInt(6, creature.getArmour());
-        stmt.setInt(7, creature.getSAttack());
-        stmt.setInt(8, creature.getHAttack());
-        stmt.setInt(9, creature.getPiercing());
+        stmt.setInt(3, creature.getMhp());
+        stmt.setFloat(4, creature.getHp());
+        stmt.setInt(5, creature.getHardness());
+        stmt.setInt(6, creature.getDodge());
+        stmt.setInt(7, creature.getArmour());
+        stmt.setInt(8, creature.getSAttack());
+        stmt.setInt(9, creature.getHAttack());
+        stmt.setInt(10, creature.getPiercing());
 
         int affectedRows = stmt.executeUpdate();
 
