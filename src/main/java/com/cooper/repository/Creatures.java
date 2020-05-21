@@ -5,6 +5,8 @@ import com.cooper.data.Creature;
 import com.cooper.data.Player;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Creatures {
     Connection conn;
@@ -44,5 +46,27 @@ public class Creatures {
             }
         }
         stmt.close();
+    }
+
+    public List<Creature> getCreaturesForPlayerId(Long id) throws SQLException {
+        PreparedStatement stmt = conn.prepareStatement("SELECT * FROM creatures WHERE `player_id` = ?");
+        stmt.setLong(1, id);
+
+        ResultSet resultSet = stmt.executeQuery();
+        List<Creature> creatures = new ArrayList<>();
+
+        while (resultSet.next()) {
+            long creature_id = resultSet.getLong("id");
+            PreparedStatement statement = conn.prepareStatement("SELECT * FROM bodyparts INNER JOIN creatureparts ON bodyparts.id = creatureparts.part_id WHERE creatureparts.creature_id = ?;");
+            statement.setLong(1, creature_id);
+            ResultSet rs = statement.executeQuery();
+            List<BodyPart> parts = new ArrayList<>();
+            while (rs.next()) {
+                parts.add(new BodyPart(rs));
+            }
+            statement.close();
+            creatures.add(new Creature(resultSet, parts));
+        }
+        return creatures;
     }
 }

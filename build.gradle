@@ -15,6 +15,7 @@ repositories {
 dependencies {
     compile 'com.jagrosh:jda-utilities:3.0.3'
     compile 'net.dv8tion:JDA:4.1.1_151'
+    compile 'com.jagrosh:jda-utilities-menu:3.0.3'
     compile group: 'org.slf4j', name: 'slf4j-simple', version: '1.6.1'
     compile 'mysql:mysql-connector-java:5.1.+'
     compile 'org.projectlombok:lombok:1.18.12'

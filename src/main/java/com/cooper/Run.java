@@ -1,9 +1,6 @@
 package com.cooper;
 
-import com.cooper.commands.CatCommand;
-import com.cooper.commands.ChooseCommand;
-import com.cooper.commands.HelloCommand;
-import com.cooper.data.Creature;
+import com.cooper.commands.*;
 import com.cooper.repository.Database;
 import com.jagrosh.jdautilities.command.CommandClientBuilder;
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
@@ -12,7 +9,6 @@ import com.jagrosh.jdautilities.examples.command.PingCommand;
 import com.jagrosh.jdautilities.examples.command.ShutdownCommand;
 import net.dv8tion.jda.api.*;
 import net.dv8tion.jda.api.entities.*;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import javax.security.auth.login.LoginException;
@@ -20,25 +16,17 @@ import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.net.URL;
-import java.util.Random;
 import java.util.Scanner;
-import java.util.concurrent.ThreadLocalRandom;
 import java.sql.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class Run extends ListenerAdapter
 {
-    Database database;
     Logger logger = LoggerFactory.getLogger(Run.class);
 
-    public static void main(String[] args) throws FileNotFoundException, ClassNotFoundException, LoginException {
+    public static void main(String[] args) throws FileNotFoundException, ClassNotFoundException, LoginException, SQLException {
         Run main = new Run();
-        try {
-        main.loadDatabase();
-        } catch(SQLException e) {
-            main.logger.error("Error connecting to database", e);
-        }
 
         File file = main.getFileFromResources("bot_token");
         Scanner myReader = new Scanner(file);
@@ -60,9 +48,10 @@ public class Run extends ListenerAdapter
                         new String[]{"Cool commands","Nice examples","Lots of fun!"},
                         new Permission[]{Permission.ADMINISTRATOR}),
 
-                new CatCommand(),
-                new ChooseCommand(),
                 new HelloCommand(waiter),
+                new GuildlistCommand(waiter),
+                new GenerateCommand(),
+                new CreaturesCommand(),
 
                 // command to check bot latency
                 new PingCommand(),
@@ -95,9 +84,5 @@ public class Run extends ListenerAdapter
         } else {
             return new File(resource.getFile());
         }
-    }
-
-    private void loadDatabase() throws SQLException, ClassNotFoundException {
-        this.database = new Database();
     }
 }

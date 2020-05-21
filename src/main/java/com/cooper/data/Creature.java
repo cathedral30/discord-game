@@ -3,6 +3,7 @@ package com.cooper.data;
 import com.cooper.repository.Database;
 import lombok.Data;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -65,6 +66,21 @@ public class Creature {
             this.piercing *= bodyPart.pm;
         }
         this.hp = this.mhp;
+    }
+
+    public Creature(ResultSet rs, List<BodyPart> parts) throws SQLException {
+        this.id = rs.getLong("id");
+        this.name = rs.getString("name");
+        //this.lifespan = lifespan;
+        this.bodyParts = parts;
+        this.mhp = rs.getInt("max_hp");
+        this.hp = rs.getInt("hp");
+        this.hardness = rs.getInt("hardness");
+        this.dodge = rs.getInt("dodge");
+        this.armour = rs.getInt("armour");
+        this.sAttack = rs.getInt("sAttack");
+        this.hAttack = rs.getInt("hAttack");
+        this.piercing = rs.getInt("piercing");
     }
 
     public Long attack(Creature creature) {
