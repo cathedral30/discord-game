@@ -1,7 +1,6 @@
 package com.cooper;
 
 import com.cooper.commands.*;
-import com.cooper.repository.Database;
 import com.jagrosh.jdautilities.command.CommandClientBuilder;
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
 import com.jagrosh.jdautilities.examples.command.AboutCommand;
@@ -10,7 +9,6 @@ import com.jagrosh.jdautilities.examples.command.ShutdownCommand;
 import net.dv8tion.jda.api.*;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-
 import javax.security.auth.login.LoginException;
 import java.awt.*;
 import java.io.File;

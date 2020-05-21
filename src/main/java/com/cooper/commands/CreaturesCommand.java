@@ -5,8 +5,6 @@ import com.cooper.repository.Database;
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import net.dv8tion.jda.api.EmbedBuilder;
-import org.graalvm.compiler.core.common.type.ArithmeticOpTable;
-
 import java.sql.SQLException;
 import java.util.List;
 
