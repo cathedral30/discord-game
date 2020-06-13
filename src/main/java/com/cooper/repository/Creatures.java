@@ -57,16 +57,12 @@ public class Creatures {
 
         while (resultSet.next()) {
             long creature_id = resultSet.getLong("id");
-            PreparedStatement statement = conn.prepareStatement("SELECT * FROM bodyparts INNER JOIN creatureparts ON bodyparts.id = creatureparts.part_id WHERE creatureparts.creature_id = ?;");
-            statement.setLong(1, creature_id);
-            ResultSet rs = statement.executeQuery();
-            List<BodyPart> parts = new ArrayList<>();
-            while (rs.next()) {
-                parts.add(new BodyPart(rs));
-            }
-            statement.close();
-            creatures.add(new Creature(resultSet, parts));
+            creatures.add(new Creature(creature_id, conn));
         }
         return creatures;
+    }
+
+    public Creature getCreatureById(Long id) throws SQLException {
+        return new Creature(id, conn);
     }
 }

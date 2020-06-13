@@ -62,4 +62,8 @@ public class Database {
     public List<Creature> getCreaturesByPlayerId(Long id) throws SQLException {
         return this.creatures.getCreaturesForPlayerId(id);
     }
+
+    public Creature getCreatureById(Long id) throws SQLException {
+        return this.creatures.getCreatureById(id);
+    }
 }

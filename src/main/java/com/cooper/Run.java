@@ -49,7 +49,7 @@ public class Run extends ListenerAdapter
                 new HelloCommand(waiter),
                 new GuildlistCommand(waiter),
                 new GenerateCommand(),
-                new CreaturesCommand(),
+                new CreaturesCommand(waiter),
 
                 // command to check bot latency
                 new PingCommand(),

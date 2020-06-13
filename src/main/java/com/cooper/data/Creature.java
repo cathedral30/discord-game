@@ -3,6 +3,8 @@ package com.cooper.data;
 import com.cooper.repository.Database;
 import lombok.Data;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -81,6 +83,35 @@ public class Creature {
         this.sAttack = rs.getInt("sAttack");
         this.hAttack = rs.getInt("hAttack");
         this.piercing = rs.getInt("piercing");
+    }
+
+    public Creature(Long id, Connection conn) throws SQLException {
+        PreparedStatement stmt = conn.prepareStatement("SELECT * FROM creatures WHERE `id` = ?");
+        stmt.setLong(1, id);
+        ResultSet resultSet = stmt.executeQuery();
+        resultSet.first();
+        long creature_id = resultSet.getLong("id");
+        PreparedStatement statement = conn.prepareStatement("SELECT * FROM bodyparts INNER JOIN creatureparts ON bodyparts.id = creatureparts.part_id WHERE creatureparts.creature_id = ?;");
+        statement.setLong(1, creature_id);
+        ResultSet rs = statement.executeQuery();
+        List<BodyPart> parts = new ArrayList<>();
+        while (rs.next()) {
+            parts.add(new BodyPart(rs));
+        }
+        statement.close();
+
+        this.bodyParts = parts;
+
+        this.id = resultSet.getLong("id");
+        this.name = resultSet.getString("name");
+        this.mhp = resultSet.getInt("max_hp");
+        this.hp = resultSet.getInt("hp");
+        this.hardness = resultSet.getInt("hardness");
+        this.dodge = resultSet.getInt("dodge");
+        this.armour = resultSet.getInt("armour");
+        this.sAttack = resultSet.getInt("sAttack");
+        this.hAttack = resultSet.getInt("hAttack");
+        this.piercing = resultSet.getInt("piercing");
     }
 
     public Long attack(Creature creature) {
